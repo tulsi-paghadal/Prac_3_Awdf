@@ -4,7 +4,7 @@ Portfolio application built with React, Vite, and React Router.
 
 ## GitHub Repositories
 
-The Projects page loads public repositories for `tulsi-paghadal` from the GitHub REST API (`https://api.github.com/users/tulsi-paghadal/repos`). It displays loading and error states, supports retry and name filtering, and shows each repository's URL and star count. No API token or additional setup is required.
+The Projects page loads the public `GlowUp` repository from the GitHub REST API (`https://api.github.com/repos/tulsi-paghadal/GlowUp`). It displays loading and error states, supports retry, and shows the repository URL and star count. No API token or additional setup is required.
 
 Run the app locally with:
 

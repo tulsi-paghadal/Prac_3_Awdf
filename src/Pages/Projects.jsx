@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const REPOSITORIES_URL =
-  "https://api.github.com/users/tulsi-paghadal/repos?sort=updated&per_page=100";
+const REPOSITORY_URL = "https://api.github.com/repos/tulsi-paghadal/GlowUp";
 
 function Spinner() {
   return (
@@ -53,7 +52,6 @@ function Projects() {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [search, setSearch] = useState("");
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
@@ -64,7 +62,7 @@ function Projects() {
       setError(null);
 
       try {
-        const response = await fetch(REPOSITORIES_URL, {
+        const response = await fetch(REPOSITORY_URL, {
           signal: controller.signal,
           headers: { Accept: "application/vnd.github+json" },
         });
@@ -74,11 +72,11 @@ function Projects() {
         }
 
         const data = await response.json();
-        if (!Array.isArray(data)) {
+        if (!data || typeof data !== "object" || !data.id) {
           throw new Error("GitHub returned an unexpected response.");
         }
 
-        setRepos(data);
+        setRepos([data]);
       } catch (fetchError) {
         if (fetchError.name !== "AbortError") {
           setError(fetchError.message || "Please check your connection.");
@@ -93,10 +91,6 @@ function Projects() {
     loadRepositories();
     return () => controller.abort();
   }, [retryCount]);
-
-  const filteredRepos = repos.filter((repo) =>
-    repo.name.toLowerCase().includes(search.trim().toLowerCase()),
-  );
 
   return (
     <div className="page-wrapper">
@@ -161,22 +155,7 @@ function Projects() {
                 <p className="page-label">LIVE FROM GITHUB</p>
                 <h2 id="github-repos-title">Repositories</h2>
               </div>
-              {!loading && !error && (
-                <span className="repo-count">{filteredRepos.length} shown</span>
-              )}
             </div>
-
-            {!loading && !error && (
-              <label className="repo-search-label">
-                <span>Filter repositories</span>
-                <input
-                  type="search"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search by repository name"
-                />
-              </label>
-            )}
 
             {loading ? (
               <Spinner />
@@ -186,7 +165,7 @@ function Projects() {
                 onRetry={() => setRetryCount((count) => count + 1)}
               />
             ) : (
-              <RepoList repos={filteredRepos} />
+              <RepoList repos={repos} />
             )}
           </section>
         </div>
