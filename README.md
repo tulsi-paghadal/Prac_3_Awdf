@@ -1,4 +1,19 @@
-# React + Vite
+# Tulsi Paghadal Portfolio
+
+Portfolio application built with React, Vite, and React Router.
+
+## GitHub Repositories
+
+The Projects page loads public repositories for `tulsi-paghadal` from the GitHub REST API (`https://api.github.com/users/tulsi-paghadal/repos`). It displays loading and error states, supports retry and name filtering, and shows each repository's URL and star count. No API token or additional setup is required.
+
+Run the app locally with:
+
+```bash
+npm install
+npm run dev
+```
+
+## Development
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
